@@ -93,7 +93,7 @@ func move(state GameState) BattlesnakeMoveResponse {
 	myBody := state.You.Body
 	bodyLenth := len(myBody)
 	log.Print("BodyLength: " + strconv.Itoa(bodyLenth))
-	for i := 1; i <= bodyLenth; i++ {
+	for i := 1; i < bodyLenth; i++ {
 		if myHead.X+1 == myBody[i].X {
 			if myHead.Y == myBody[i].Y {
 				isMoveSafe["right"] = false
