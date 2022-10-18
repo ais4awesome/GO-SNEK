@@ -26,7 +26,7 @@ func info() BattlesnakeInfoResponse {
 	return BattlesnakeInfoResponse{
 		APIVersion: "1",
 		Author:     "RandlSnek",  // TODO: Your Battlesnake username
-		Color:      "#888888",    // TODO: Choose color
+		Color:      "#42f5d1",    // TODO: Choose color
 		Head:       "all-seeing", // TODO: Choose head
 		Tail:       "coffee",     // TODO: Choose tail
 	}
@@ -71,12 +71,47 @@ func move(state GameState) BattlesnakeMoveResponse {
 		isMoveSafe["up"] = false
 	}
 
-	// TODO: Step 1 - Prevent your Battlesnake from moving out of bounds
-	// boardWidth := state.Board.Width
-	// boardHeight := state.Board.Height
+	// Prevent Battlesnake from moving out of bounds
+	boardWidth := state.Board.Width
+	boardHeight := state.Board.Height
 
-	// TODO: Step 2 - Prevent your Battlesnake from colliding with itself
-	// mybody := state.You.Body
+	if myHead.X+1 >= boardHeight {
+		isMoveSafe["up"] = false
+	}
+	if myHead.X+1 <= 0 {
+		isMoveSafe["down"] = false
+	}
+	if myHead.Y+1 >= boardWidth {
+		isMoveSafe["right"] = false
+	}
+	if myHead.Y+1 <= 0 {
+		isMoveSafe["left"] = false
+	}
+
+	// Prevent Battlesnake from colliding with itself
+	myBody := state.You.Body
+	for i := 1; i <= len(myBody); i++ {
+		if myHead.X+1 == myBody[i].X {
+			if myHead.Y == myBody[i].Y {
+				isMoveSafe["right"] = false
+			}
+		}
+		if myHead.X-1 == myBody[i].X {
+			if myHead.Y == myBody[i].Y {
+				isMoveSafe["left"] = false
+			}
+		}
+		if myHead.Y+1 == myBody[i].Y {
+			if myHead.X == myBody[i].X {
+				isMoveSafe["up"] = false
+			}
+		}
+		if myHead.Y-1 == myBody[i].Y {
+			if myHead.X == myBody[i].X {
+				isMoveSafe["down"] = false
+			}
+		}
+	}
 
 	// TODO: Step 3 - Prevent your Battlesnake from colliding with other Battlesnakes
 	// opponents := state.Board.Snakes
