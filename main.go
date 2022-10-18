@@ -15,6 +15,7 @@ package main
 import (
 	"log"
 	"math/rand"
+	"strconv"
 )
 
 // info is called when you create your Battlesnake on play.battlesnake.com
@@ -90,7 +91,9 @@ func move(state GameState) BattlesnakeMoveResponse {
 
 	// Prevent Battlesnake from colliding with itself
 	myBody := state.You.Body
-	for i := 1; i <= len(myBody); i++ {
+	bodyLenth := len(myBody)
+	log.Print("BodyLength: " + strconv.Itoa(bodyLenth))
+	for i := 1; i <= bodyLenth; i++ {
 		if myHead.X+1 == myBody[i].X {
 			if myHead.Y == myBody[i].Y {
 				isMoveSafe["right"] = false
