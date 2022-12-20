@@ -47,6 +47,7 @@ func end(state GameState) {
 // Valid moves are "up", "down", "left", or "right"
 // See https://docs.battlesnake.com/api/example-move for available data
 func move(state GameState) BattlesnakeMoveResponse {
+	log.Print("state.Turn: ", state.Turn)
 
 	isMoveSafe := map[string]bool{
 		"up":    true,
@@ -61,34 +62,45 @@ func move(state GameState) BattlesnakeMoveResponse {
 
 	if myNeck.X < myHead.X { // Neck is left of head, don't move left
 		isMoveSafe["left"] = false
+		log.Print("cant move left, would hit neck")
 
 	} else if myNeck.X > myHead.X { // Neck is right of head, don't move right
 		isMoveSafe["right"] = false
+		log.Print("cant move right, would hit neck")
 
 	} else if myNeck.Y < myHead.Y { // Neck is below head, don't move down
 		isMoveSafe["down"] = false
+		log.Print("cant move down, would hit neck")
 
 	} else if myNeck.Y > myHead.Y { // Neck is above head, don't move up
 		isMoveSafe["up"] = false
+		log.Print("cant move up, would hit neck")
+
 	}
 
 	// Prevent Battlesnake from moving out of bounds
 	boardWidth := state.Board.Width
 	boardHeight := state.Board.Height
-	log.Print("Board width: ", boardWidth)
-	log.Print("Board height: ", boardHeight)
+	//log.Print("Board width: ", boardWidth)
+	//log.Print("Board height: ", boardHeight)
 
-	if myHead.X+1 >= boardHeight {
+	log.Print("My head x: ", myHead.X)
+	log.Print("My head y: ", myHead.Y)
+	if myHead.Y+1 >= boardHeight {
 		isMoveSafe["up"] = false
+		log.Print("cant move up, oob")
 	}
-	if myHead.X-1 <= 1 {
+	if myHead.Y-1 <= 0 {
 		isMoveSafe["down"] = false
+		log.Print("cant move down, oob")
 	}
-	if myHead.Y+1 >= boardWidth {
+	if myHead.X+1 >= boardWidth {
 		isMoveSafe["right"] = false
+		log.Print("cant move right, oob")
 	}
-	if myHead.Y-1 <= 1 {
+	if myHead.X-1 <= 0 {
 		isMoveSafe["left"] = false
+		log.Print("cant move left, oob")
 	}
 
 	// Prevent Battlesnake from colliding with itself
@@ -99,21 +111,25 @@ func move(state GameState) BattlesnakeMoveResponse {
 		if myHead.X+1 == myBody[i].X {
 			if myHead.Y == myBody[i].Y {
 				isMoveSafe["right"] = false
+				log.Print("cant move right, would hit body")
 			}
 		}
 		if myHead.X-1 == myBody[i].X {
 			if myHead.Y == myBody[i].Y {
 				isMoveSafe["left"] = false
+				log.Print("cant move left, would hit body")
 			}
 		}
 		if myHead.Y+1 == myBody[i].Y {
 			if myHead.X == myBody[i].X {
 				isMoveSafe["up"] = false
+				log.Print("cant move up, would hit body")
 			}
 		}
 		if myHead.Y-1 == myBody[i].Y {
 			if myHead.X == myBody[i].X {
 				isMoveSafe["down"] = false
+				log.Print("cant move down, would hit body")
 			}
 		}
 	}
