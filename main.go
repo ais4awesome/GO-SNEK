@@ -13,10 +13,17 @@ package main
 // For more info see docs.battlesnake.com
 
 import (
+	"encoding/json"
 	"log"
 	"math/rand"
 	"strconv"
 )
+
+// Make struct for other snakes
+type OpSnake struct{
+  Name string`json:"name"`
+  Cords string`json:"cords"`
+}
 
 // info is called when you create your Battlesnake on play.battlesnake.com
 // and controls your Battlesnake's appearance
@@ -134,8 +141,49 @@ func move(state GameState) BattlesnakeMoveResponse {
 		}
 	}
 
-	// TODO: Step 3 - Prevent your Battlesnake from colliding with other Battlesnakes
-	// opponents := state.Board.Snakes
+	// Prevent Battlesnake from colliding with other Battlesnakes
+	opponents := state.Board.Snakes
+	log.Print(opponents)
+  for index, snakeData := range opponents{
+    log.Print(index)
+    log.Print(snakeData)
+    if snakeData.Name == "RandlSnek"{
+      continue
+    }
+    if state.You.Length < snakeData.Length{
+    		if myHead.X+1 == snakeData.Length[i].X {
+    			if myHead.Y == myBody[i].Y {
+    				isMoveSafe["right"] = false
+    				log.Print("cant move right, would hit body")
+    			}
+    		}
+    		if myHead.X-1 == myBody[i].X {
+    			if myHead.Y == myBody[i].Y {
+    				isMoveSafe["left"] = false
+    				log.Print("cant move left, would hit body")
+    			}
+    		}
+    		if myHead.Y+1 == myBody[i].Y {
+    			if myHead.X == myBody[i].X {
+    				isMoveSafe["up"] = false
+    				log.Print("cant move up, would hit body")
+    			}
+    		}
+    		if myHead.Y-1 == myBody[i].Y {
+    			if myHead.X == myBody[i].X {
+    				isMoveSafe["down"] = false
+    				log.Print("cant move down, would hit body")
+    			}
+		}
+	}
+    }
+    //snakesData := []byte(snakesData)
+    //var tempSnake OpSnake
+    //err:= json.Unmarshal(snakesData, &tempSnake)
+    //if err != nil{
+      //log.Print(err)
+    //}
+  }
 
 	// Are there any safe moves left?
 	safeMoves := []string{}
