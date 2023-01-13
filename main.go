@@ -26,10 +26,10 @@ func info() BattlesnakeInfoResponse {
 
 	return BattlesnakeInfoResponse{
 		APIVersion: "1",
-		Author:     "RandlSnek",  // TODO: Your Battlesnake username
-		Color:      "#42f5d1",    // TODO: Choose color
-		Head:       "all-seeing", // TODO: Choose head
-		Tail:       "coffee",     // TODO: Choose tail
+		Author:     "RandlSnek", // TODO: Your Battlesnake username
+		Color:      "##ff6600",  // TODO: Choose color
+		Head:       "evil",      // TODO: Choose head
+		Tail:       "hook",      // TODO: Choose tail
 	}
 }
 
@@ -90,7 +90,7 @@ func move(state GameState) BattlesnakeMoveResponse {
 		isMoveSafe["up"] = false
 		log.Print("cant move up, oob")
 	}
-	if myHead.Y-1 <= 0 {
+	if myHead.Y-1 < 0 {
 		isMoveSafe["down"] = false
 		log.Print("cant move down, oob")
 	}
@@ -98,7 +98,7 @@ func move(state GameState) BattlesnakeMoveResponse {
 		isMoveSafe["right"] = false
 		log.Print("cant move right, oob")
 	}
-	if myHead.X-1 <= 0 {
+	if myHead.X-1 < 0 {
 		isMoveSafe["left"] = false
 		log.Print("cant move left, oob")
 	}
