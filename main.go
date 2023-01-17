@@ -150,40 +150,68 @@ func move(state GameState) BattlesnakeMoveResponse {
     if snakeData.Name == "RandlSnek"{
       continue
     }
-    if state.You.Length < snakeData.Length{
-    		if myHead.X+1 == snakeData.Length[i].X {
-    			if myHead.Y == myBody[i].Y {
-    				isMoveSafe["right"] = false
-    				log.Print("cant move right, would hit body")
-    			}
-    		}
-    		if myHead.X-1 == myBody[i].X {
-    			if myHead.Y == myBody[i].Y {
-    				isMoveSafe["left"] = false
-    				log.Print("cant move left, would hit body")
-    			}
-    		}
-    		if myHead.Y+1 == myBody[i].Y {
-    			if myHead.X == myBody[i].X {
-    				isMoveSafe["up"] = false
-    				log.Print("cant move up, would hit body")
-    			}
-    		}
-    		if myHead.Y-1 == myBody[i].Y {
-    			if myHead.X == myBody[i].X {
-    				isMoveSafe["down"] = false
-    				log.Print("cant move down, would hit body")
-    			}
+    // Avoid hitting another snake's body and loosing due to unsports-snake-like conduct
+    // Not sure if length includes body or not... might need to change.
+    for i := 0; i < snakeData.Length; i++ {
+		if myHead.X+1 == snakeData.Body[i].X {
+			if myHead.Y == snakeData.Body[i].Y {
+				isMoveSafe["right"] = false
+				log.Print("cant move right, would hit body of another snake")
+			}
+		}
+		if myHead.X-1 == snakeData.Body[i].X {
+			if myHead.Y == snakeData.Body[i].Y {
+				isMoveSafe["left"] = false
+				log.Print("cant move left, would hit body of another snake")
+			}
+		}
+		if myHead.Y+1 == snakeData.Body[i].Y {
+			if myHead.X == snakeData.Body[i].X {
+				isMoveSafe["up"] = false
+				log.Print("cant move up, would hit body of another snake")
+			}
+		}
+		if myHead.Y-1 == snakeData.Body[i].Y {
+			if myHead.X == snakeData.Body[i].X {
+				isMoveSafe["down"] = false
+				log.Print("cant move down, would hit body of another snake")
+			}
 		}
 	}
-    }
+  // Don't try to eat a bigger snake!
+    if state.You.Length < snakeData.Length{
+    		if myHead.X+1 == snakeData.Head.X {
+    			if myHead.Y == snakeData.Head.Y {
+    				isMoveSafe["right"] = false
+    				log.Print("cant move right, would be eaten!")
+    			}
+    		}
+    		if myHead.X-1 == snakeData.Head.X {
+    			if myHead.Y == snakeData.Head.Y {
+    				isMoveSafe["left"] = false
+    				log.Print("cant move left, would be eaten!")
+    			}
+    		}
+    		if myHead.Y+1 == snakeData.Head.Y {
+    			if myHead.X == snakeData.Head.X {
+    				isMoveSafe["up"] = false
+    				log.Print("cant move up, would be eaten!")
+    			}
+    		}
+    		if myHead.Y-1 == snakeData.Head.Y {
+    			if myHead.X == snakeData.Head.X {
+    				isMoveSafe["down"] = false
+    				log.Print("cant move down, would be eaten!")
+    			}
+		}
+	 }
+  }
     //snakesData := []byte(snakesData)
     //var tempSnake OpSnake
     //err:= json.Unmarshal(snakesData, &tempSnake)
     //if err != nil{
       //log.Print(err)
     //}
-  }
 
 	// Are there any safe moves left?
 	safeMoves := []string{}
